@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BG Writing Assistant</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <main class="app-shell">
+    <section class="hero-card">
+      <div class="hero-top">
+        <div>
+          <span class="badge">AI Writing Assistant</span>
+          <h1>Пиши по-добре на български</h1>
+          <p class="subtitle">
+            Подобрявай съобщения, имейли и работни текстове с ясен и удобен AI панел.
+          </p>
+        </div>
+      </div>
+
+      <div class="assistant-layout">
+        <section class="panel input-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Твоят текст</h2>
+              <span class="panel-note">Напиши или постави текст за подобрение</span>
+            </div>
+
+            <div class="top-actions">
+              <button class="small-btn" onclick="pasteResultBack()">Постави резултата</button>
+              <button class="small-btn danger-btn" onclick="clearAll()">Изчисти</button>
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <button class="mode-btn active" data-mode="fix">Поправи</button>
+            <button class="mode-btn" data-mode="professional">Професионално</button>
+            <button class="mode-btn" data-mode="email">Имейл</button>
+            <button class="mode-btn" data-mode="polite">Учтиво</button>
+            <button class="mode-btn" data-mode="short">По-кратко</button>
+            <button class="mode-btn" data-mode="clear">По-ясно</button>
+            <button class="mode-btn" data-mode="confident">По-уверено</button>
+            <button class="mode-btn" data-mode="reply">Отговор</button>
+          </div>
+
+          <textarea
+            id="textInput"
+            placeholder="Например: Здравей, изпращам ти документа виж го и кажи дали е ок"
+          ></textarea>
+        </section>
+
+        <aside class="panel assistant-panel">
+          <div class="panel-head">
+            <div>
+              <h2>AI Assistant</h2>
+              <span class="panel-note">Избери как да звучи резултатът</span>
+            </div>
+          </div>
+
+          <div class="controls-grid">
+            <div class="control-box">
+              <label for="toneSelect">Тон</label>
+              <select id="toneSelect">
+                <option value="default">Стандартен</option>
+                <option value="professional">Професионален</option>
+                <option value="friendly">Приятелски</option>
+                <option value="formal">Официален</option>
+                <option value="confident">Уверен</option>
+                <option value="polite">Учтив</option>
+              </select>
+            </div>
+
+            <div class="control-box">
+              <label for="lengthSelect">Дължина</label>
+              <select id="lengthSelect">
+                <option value="default">Без промяна</option>
+                <option value="shorter">По-кратко</option>
+                <option value="longer">По-подробно</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="control-box full-width-box">
+            <label for="instructionInput">Допълнителна инструкция</label>
+            <input
+              id="instructionInput"
+              type="text"
+              placeholder="Например: Направи го подходящо за имейл до клиент"
+            />
+          </div>
+
+          <div class="action-stack">
+            <button class="primary-btn big-btn" onclick="sendCurrentMode()">Подобри текста</button>
+            <button class="ghost-btn big-btn" onclick="improveAgain()">Подобри още веднъж</button>
+          </div>
+
+          <div id="status" class="status">Готов за работа</div>
+
+          <div class="result-wrap">
+            <div id="loader" class="loader hidden">
+              <div class="spinner"></div>
+              <span>AI обработва текста...</span>
+            </div>
+
+            <div id="result" class="result-content">Тук ще се покаже подобреният текст.</div>
+          </div>
+
+          <div class="result-actions">
+            <button class="copy-btn" onclick="copyResult()">Копирай</button>
+            <button class="small-btn" onclick="pasteResultBack()">Замени входния текст</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
