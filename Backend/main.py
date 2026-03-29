@@ -1,8 +1,11 @@
 import os
+from pathlib import Path
 from typing import Literal
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from openai import OpenAI
 
@@ -10,7 +13,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # за тест; после го смени с твоя frontend домейн
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -22,6 +25,9 @@ if not api_key:
 
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 client = OpenAI(api_key=api_key)
+
+BASE_DIR = Path(__file__).resolve().parent
+FRONTEND_DIR = BASE_DIR.parent / "Frontend"
 
 
 class TextRequest(BaseModel):
@@ -146,11 +152,6 @@ def build_prompt(text: str, mode: str, tone: str, length: str, instruction: str)
     return "\n".join(parts).strip()
 
 
-@app.get("/")
-def root():
-    return {"status": "ok", "message": "BG Writing Assistant backend is running"}
-
-
 @app.get("/health")
 def health():
     return {"status": "healthy"}
@@ -180,3 +181,11 @@ def process_text(req: TextRequest):
     )
 
     return {"result": response.output_text.strip()}
+
+
+app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
+
+
+@app.get("/")
+def serve_home():
+    return FileResponse(str(FRONTEND_DIR / "index.html"))
